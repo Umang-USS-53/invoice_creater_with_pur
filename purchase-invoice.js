@@ -20,6 +20,42 @@ if (document.getElementById('purchaseInvoiceForm')) {
     const itemTableBody = document.getElementById('itemTable').getElementsByTagName('tbody')[0];
     const addItemButton = document.getElementById('addItemButton');
     const saveButton = document.getElementById('savePurchaseInvoiceButton');
+    const supplierDropdown = document.getElementById('supplierDropdown');
+    const supplierGSTInput = document.getElementById('supplierGST');
+
+    // Function to fetch and populate the supplier dropdown
+    function populateSupplierDropdown() {
+        db.collection('suppliers').get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const supplier = doc.data();
+                const option = document.createElement('option');
+                option.value = doc.id;
+                option.textContent = supplier.name;
+                supplierDropdown.appendChild(option);
+            });
+        }).catch(error => {
+            console.error('Error fetching suppliers:', error);
+        });
+    }
+
+    // Event listener to update GSTIN when a supplier is selected
+    supplierDropdown.addEventListener('change', () => {
+        const supplierId = supplierDropdown.value;
+        if (supplierId) {
+            db.collection('suppliers').doc(supplierId).get().then(doc => {
+                if (doc.exists) {
+                    supplierGSTInput.value = doc.data().gstin || '';
+                } else {
+                    supplierGSTInput.value = '';
+                }
+            }).catch(error => {
+                console.error('Error fetching supplier details:', error);
+                supplierGSTInput.value = '';
+            });
+        } else {
+            supplierGSTInput.value = '';
+        }
+    });
 
     function calculateTotals() {
         let totalQuantity = 0;
@@ -111,11 +147,14 @@ if (document.getElementById('purchaseInvoiceForm')) {
             return;
         }
 
+        const supplierName = supplierDropdown.options[supplierDropdown.selectedIndex].text;
+        const supplierGST = supplierGSTInput.value;
+
         const purchaseInvoiceData = {
             invoiceNumber: invoiceNumber,
             invoiceDate: document.getElementById('invoiceDate').value,
-            supplierName: document.getElementById('supplierName').value,
-            supplierGST: document.getElementById('supplierGST').value,
+            supplierName: supplierName,
+            supplierGST: supplierGST,
             totalQuantity: parseFloat(document.getElementById('totalQuantity').textContent),
             taxableValue: parseFloat(document.getElementById('taxableValue').textContent),
             cgstValue: parseFloat(document.getElementById('cgstValue').textContent),
@@ -170,6 +209,7 @@ if (document.getElementById('purchaseInvoiceForm')) {
     // Initial calculations and event listeners for the first row
     document.querySelectorAll('.item-row').forEach(addEventListenersToRow);
     calculateTotals();
+    populateSupplierDropdown(); // Call this function on page load
 }
 
 // ------------------------------------------
