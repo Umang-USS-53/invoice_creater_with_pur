@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter Purchase Invoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <button id="logoutButton" style="position: absolute; top: 10px; right: 10px;">Logout</button>
+    <h1>Enter Purchase Invoice</h1>
+
+    <div id="purchaseInvoiceForm">
+        <div class="form-section">
+            <h2>Invoice Details</h2>
+            <label for="invoiceDate">Invoice Date (DD/MM/YYYY):</label>
+            <input type="date" id="invoiceDate" name="invoiceDate" required>
+            <label for="invoiceNumber">Invoice Number:</label>
+            <input type="text" id="invoiceNumber" name="invoiceNumber" required>
+        </div>
+
+        <div class="form-section">
+            <h2>Supplier Details</h2>
+            <label for="supplierName">Supplier Name:</label>
+            <input type="text" id="supplierName" name="supplierName" required>
+            <label for="supplierGST">Supplier GSTIN:</label>
+            <input type="text" id="supplierGST" name="supplierGST" required>
+        </div>
+
+        <div class="form-section">
+            <h2>Items</h2>
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th>Lot No.</th>
+                        <th>Description of Goods</th>
+                        <th>HSN Code</th>
+                        <th>Unit</th>
+                        <th>Quantity</th>
+                        <th>Rate (per unit)</th>
+                        <th>CGST (%)</th>
+                        <th>SGST (%)</th>
+                        <th>IGST (%)</th>
+                        <th>Total Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="item-row">
+                        <td><input type="text" class="lot-no" value="1"></td>
+                        <td><input type="text" class="description" required></td>
+                        <td><input type="text" class="hsn-code" required></td>
+                        <td><input type="text" class="unit" required></td>
+                        <td><input type="number" class="quantity" value="1" required></td>
+                        <td><input type="number" class="rate" value="0" required></td>
+                        <td><input type="number" class="cgst-rate" value="9"></td>
+                        <td><input type="number" class="sgst-rate" value="9"></td>
+                        <td><input type="number" class="igst-rate" value="0"></td>
+                        <td><span class="item-total">0.00</span></td>
+                        <td><button type="button" class="remove-item-button" style="display:none;">-</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addItemButton">+</button>
+        </div>
+
+        <div class="summary-section">
+            <p><strong>Total Quantity:</strong> <span id="totalQuantity">0</span></p>
+            <p><strong>Taxable Value:</strong> <span id="taxableValue">0.00</span></p>
+            <p><strong>CGST Total:</strong> <span id="cgstValue">0.00</span></p>
+            <p><strong>SGST Total:</strong> <span id="sgstValue">0.00</span></p>
+            <p><strong>IGST Total:</strong> <span id="igstValue">0.00</span></p>
+            <p><strong>Grand Total:</strong> <span id="grandTotal">0.00</span></p>
+        </div>
+        
+        <button type="button" id="savePurchaseInvoiceButton">Save Purchase Invoice</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+    <script src="purchase-invoice.js"></script>
+</body>
+</html>
