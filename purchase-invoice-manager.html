@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Invoice Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html"><h1>Purchase Invoice Manager</h1></a>
+        <div id="user-info"></div>
+        <button id="logout-button">Logout</button>
+    </header>
+
+    <div class="container">
+        <h2>Record a New Purchase Invoice</h2>
+        <form id="purchase-invoice-form">
+            <label for="supplier-name">Supplier Name:</label>
+            <input type="text" id="supplier-name" required>
+
+            <label for="invoice-number">Invoice Number:</label>
+            <input type="text" id="invoice-number" required>
+            
+            <label for="invoice-date">Invoice Date:</label>
+            <input type="date" id="invoice-date" required>
+            
+            <label for="total-amount">Total Amount:</label>
+            <input type="number" id="total-amount" required>
+
+            <button type="submit">Save Purchase Invoice</button>
+        </form>
+
+        <h2>All Purchase Invoices</h2>
+        <div id="purchase-invoices-list" class="list-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Supplier Name</th>
+                        <th>Invoice Number</th>
+                        <th>Invoice Date</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="invoices-table-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+    <script src="purchase-invoice-manager.js"></script>
+</body>
+</html>
